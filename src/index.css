@@ -1,0 +1,426 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-graphite: #0a0d12;
+    --card-graphite: #131822;
+    --border-graphite: #232e42;
+    --cyan-glow: #00e5ff;
+    --amber-warning: #f59e0b;
+    --crimson-critical: #ef4444;
+  }
+
+  body {
+    background-color: #0a0d12;
+    color: #e2e8f0;
+    font-family: 'Inter', system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Custom scrollbar for industrial UI */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0e1219;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #232e42;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+  }
+}
+
+/* Industrial Grid Background */
+.bg-grid-pattern {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(35, 46, 66, 0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(35, 46, 66, 0.25) 1px, transparent 1px);
+}
+
+.bg-dot-pattern {
+  background-image: radial-gradient(rgba(35, 46, 66, 0.5) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Glass panel effect */
+.glass-panel {
+  background: rgba(19, 24, 34, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(35, 46, 66, 0.6);
+}
+
+.glass-panel-glow {
+  background: rgba(19, 24, 34, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  box-shadow: 0 0 25px -5px rgba(0, 229, 255, 0.15);
+}
+
+/* Monospace telemetry readout */
+.font-telemetry {
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: -0.02em;
+}
+
+/* Pulse animation utility */
+@keyframes beacon {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.15); opacity: 0.3; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.animate-beacon {
+  animation: beacon 2s infinite ease-in-out;
+}
+
+/* ============================================================== */
+/* INDUSTRIAL DUAL-THEME ENGINE (DARK GRAPHITE & CLEAN LIGHT)     */
+/* ============================================================== */
+html.light {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+/* Body & Root Canvas */
+html.light body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* Background layers in Light Mode */
+html.light .bg-graphite-950,
+html.light .bg-graphite-950\/70,
+html.light .bg-graphite-950\/60,
+html.light .bg-graphite-950\/50,
+html.light .bg-graphite-950\/40 {
+  background-color: #f8fafc !important;
+}
+
+/* Modal and Drawer backdrop dimming overlays */
+html.light .fixed.inset-0.bg-graphite-950\/80,
+html.light .fixed.inset-0.bg-graphite-950\/60 {
+  background-color: rgba(15, 23, 42, 0.45) !important;
+}
+
+html.light .bg-graphite-900,
+html.light .bg-graphite-900\/90,
+html.light .bg-graphite-900\/95 {
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+}
+
+html.light .bg-graphite-850 {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .bg-graphite-800,
+html.light .bg-graphite-800\/80,
+html.light .bg-graphite-800\/60 {
+  background-color: #f1f5f9 !important;
+}
+
+html.light .bg-graphite-750 {
+  background-color: #e2e8f0 !important;
+}
+
+html.light .hover\:bg-graphite-750:hover,
+html.light .hover\:bg-graphite-800:hover,
+html.light .hover\:bg-graphite-800\/80:hover {
+  background-color: #e2e8f0 !important;
+}
+
+html.light .hover\:bg-graphite-850:hover,
+html.light .hover\:bg-graphite-850\/50:hover {
+  background-color: #f8fafc !important;
+}
+
+/* Borders and Dividers in Light Mode */
+html.light .border-graphite-800,
+html.light .border-graphite-800\/80,
+html.light .border-graphite-800\/60,
+html.light .border-graphite-700,
+html.light .border-graphite-700\/80,
+html.light .border-graphite-700\/60,
+html.light .border-graphite-700\/50 {
+  border-color: #e2e8f0 !important;
+}
+
+html.light .divide-graphite-800 > :not([hidden]) ~ :not([hidden]),
+html.light .divide-graphite-800\/60 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #e2e8f0 !important;
+}
+
+/* Typography in Light Mode: Crisp, high-contrast text */
+html.light .text-white {
+  color: #0f172a !important;
+}
+
+html.light .text-graphite-100 {
+  color: #1e293b !important;
+}
+
+html.light .text-graphite-200 {
+  color: #334155 !important;
+}
+
+html.light .text-graphite-300 {
+  color: #475569 !important;
+}
+
+html.light .text-graphite-400 {
+  color: #64748b !important;
+}
+
+html.light .text-graphite-500 {
+  color: #94a3b8 !important;
+}
+
+/* Form Inputs, Dropdowns and Controls in Light Mode */
+html.light input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+html.light select,
+html.light textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Grid & dot patterns in Light Mode */
+html.light .bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(203, 213, 225, 0.4) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(203, 213, 225, 0.4) 1px, transparent 1px) !important;
+}
+
+html.light .bg-dot-pattern {
+  background-image: radial-gradient(rgba(148, 163, 184, 0.35) 1px, transparent 1px) !important;
+}
+
+/* Glass panel effect in Light Mode */
+html.light .glass-panel {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light .glass-panel-glow {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: rgba(8, 145, 178, 0.35) !important;
+  box-shadow: 0 4px 20px -2px rgba(8, 145, 178, 0.12) !important;
+}
+
+/* Status colors in Light Mode (calibrated for high contrast on light canvas) */
+html.light .text-cyan-electric {
+  color: #0891b2 !important;
+}
+html.light .text-cyan-400 {
+  color: #0284c7 !important;
+}
+html.light .text-cyan-300 {
+  color: #0e7490 !important;
+}
+html.light .text-amber-400 {
+  color: #b45309 !important;
+}
+html.light .text-amber-300 {
+  color: #b45309 !important;
+}
+html.light .text-rose-400 {
+  color: #dc2626 !important;
+}
+html.light .text-rose-300 {
+  color: #b91c1c !important;
+}
+html.light .text-emerald-400 {
+  color: #059669 !important;
+}
+html.light .text-emerald-300 {
+  color: #047857 !important;
+}
+html.light .text-yellow-400 {
+  color: #a16207 !important;
+}
+html.light .text-blue-400 {
+  color: #1d4ed8 !important;
+}
+html.light .text-blue-300 {
+  color: #1e40af !important;
+}
+html.light .text-purple-400 {
+  color: #7e22ce !important;
+}
+
+/* Fix hover states in Light Mode so text doesn't turn white on light backgrounds */
+html.light .hover\:text-white:hover {
+  color: #0f172a !important;
+}
+
+html.light .group:hover .group-hover\:text-white {
+  color: #0f172a !important;
+}
+
+html.light .group:hover .group-hover\:text-cyan-electric {
+  color: #0891b2 !important;
+}
+
+/* Translucent status pills & badges in Light Mode */
+html.light .bg-rose-500\/10,
+html.light .bg-rose-500\/15,
+html.light .bg-rose-500\/20 {
+  background-color: #fee2e2 !important;
+  border-color: #fca5a5 !important;
+}
+
+html.light .bg-amber-500\/10,
+html.light .bg-amber-500\/15,
+html.light .bg-amber-500\/20 {
+  background-color: #fef3c7 !important;
+  border-color: #fcd34d !important;
+}
+
+html.light .bg-emerald-500\/10,
+html.light .bg-emerald-500\/15,
+html.light .bg-emerald-500\/20 {
+  background-color: #d1fae5 !important;
+  border-color: #6ee7b7 !important;
+}
+
+html.light .bg-cyan-500\/10,
+html.light .bg-cyan-500\/15,
+html.light .bg-cyan-500\/20 {
+  background-color: #cffafe !important;
+  border-color: #67e8f9 !important;
+}
+
+html.light .bg-blue-500\/10,
+html.light .bg-blue-500\/15,
+html.light .bg-blue-500\/20 {
+  background-color: #dbeafe !important;
+  border-color: #93c5fd !important;
+}
+
+/* Retain high-contrast white text for solid badges & active notifications */
+html.light .bg-rose-500,
+html.light .bg-rose-600,
+html.light .bg-rose-700,
+html.light .bg-cyan-600,
+html.light .bg-cyan-700,
+html.light .bg-blue-600,
+html.light .bg-blue-700,
+html.light .bg-emerald-600,
+html.light .bg-emerald-700,
+html.light .bg-indigo-600,
+html.light .bg-purple-600 {
+  color: #ffffff !important;
+}
+html.light .bg-rose-500 .text-white,
+html.light .bg-rose-600 .text-white,
+html.light .bg-emerald-600 .text-white,
+html.light .bg-cyan-600 .text-white,
+html.light .bg-blue-600 .text-white,
+html.light .bg-indigo-600 .text-white,
+html.light .bg-purple-600 .text-white,
+html.light .bg-cyan-600 *,
+html.light .bg-cyan-700 *,
+html.light .bg-blue-600 *,
+html.light .bg-blue-700 *,
+html.light .bg-rose-600 *,
+html.light .bg-rose-700 *,
+html.light .bg-emerald-600 *,
+html.light .bg-emerald-700 * {
+  color: #ffffff !important;
+}
+
+/* Primary buttons with vibrant cyan retain deep black text */
+html.light .bg-gradient-to-r.from-cyan-electric,
+html.light .bg-gradient-to-r.from-cyan-electric span,
+html.light .bg-cyan-electric,
+html.light .bg-cyan-electric * {
+  color: #0a0d12 !important;
+}
+
+/* Scrollbars in Light Mode */
+html.light ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ============================================================== */
+/* RECHARTS UNIVERSAL HIGH-CONTRAST TOOLTIP ENGINE                */
+/* ============================================================== */
+.recharts-default-tooltip {
+  border-radius: 10px !important;
+  padding: 10px 14px !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 11px !important;
+}
+
+html.dark .recharts-default-tooltip {
+  background-color: #0f172a !important;
+  border: 1px solid #334155 !important;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.8) !important;
+}
+
+html.dark .recharts-default-tooltip .recharts-tooltip-label {
+  color: #38bdf8 !important;
+  font-weight: 700 !important;
+  font-size: 11px !important;
+  margin-bottom: 4px !important;
+}
+
+html.dark .recharts-default-tooltip .recharts-tooltip-item,
+html.dark .recharts-default-tooltip .recharts-tooltip-item-name,
+html.dark .recharts-default-tooltip .recharts-tooltip-item-value,
+html.dark .recharts-default-tooltip .recharts-tooltip-item-unit,
+html.dark .recharts-default-tooltip .recharts-tooltip-item-separator {
+  color: #f8fafc !important;
+  font-size: 11px !important;
+}
+
+html.light .recharts-default-tooltip {
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 4px 10px -2px rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light .recharts-default-tooltip .recharts-tooltip-label {
+  color: #0284c7 !important;
+  font-weight: 700 !important;
+  font-size: 11px !important;
+  margin-bottom: 4px !important;
+}
+
+html.light .recharts-default-tooltip .recharts-tooltip-item,
+html.light .recharts-default-tooltip .recharts-tooltip-item-name,
+html.light .recharts-default-tooltip .recharts-tooltip-item-value,
+html.light .recharts-default-tooltip .recharts-tooltip-item-unit,
+html.light .recharts-default-tooltip .recharts-tooltip-item-separator {
+  color: #0f172a !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+}
+
+

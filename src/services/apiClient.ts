@@ -3,20 +3,21 @@
  * Connects React frontend to FastAPI backend endpoints & WebSockets.
  */
 
+const API_ORIGIN = "https://machinemind-ai-backend.onrender.com";
+
 const getApiBase = (): string => {
-  if (typeof window !== "undefined") {
-    // Relative path leverages Vite dev server proxy to http://127.0.0.1:8000
+  if (import.meta.env.DEV) {
     return "/api/v1";
   }
-  return "http://127.0.0.1:8000/api/v1";
+  return `${API_ORIGIN}/api/v1`;
 };
 
 const getWsBase = (machineId: string = "MTR-704"): string => {
-  if (typeof window !== "undefined") {
+  if (import.meta.env.DEV) {
     const proto = window.location.protocol === "https:" ? "wss:" : "ws:";
     return `${proto}//${window.location.host}/api/v1/ws/telemetry/${machineId}`;
   }
-  return `ws://127.0.0.1:8000/api/v1/ws/telemetry/${machineId}`;
+  return `wss://machinemind-ai-backend.onrender.com/api/v1/ws/telemetry/${machineId}`;
 };
 
 function getAuthHeaders(): HeadersInit {

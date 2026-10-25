@@ -3,20 +3,37 @@
  * Connects React frontend to FastAPI backend endpoints & WebSockets.
  */
 
-const API_ORIGIN = "https://machinemind-ai-backend.onrender.com";
+const PROD_API_ORIGIN = "https://machinemind-ai-backend.onrender.com";
 
-const getApiBase = (): string => {
+export const getApiBase = (): string => {
+  // If explicitly configured via VITE_API_BASE_URL, prioritize it
+  const envUrl = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.trim();
+  if (envUrl) {
+    const cleanUrl = envUrl.replace(/\/+$/, "");
+    return cleanUrl.endsWith("/api/v1") ? cleanUrl : `${cleanUrl}/api/v1`;
+  }
+
+  // In local development, use relative path to leverage Vite dev proxy
   if (import.meta.env.DEV) {
     return "/api/v1";
   }
-  return `${API_ORIGIN}/api/v1`;
+
+  // In production, connect directly to the deployed public HTTPS backend
+  return `${PROD_API_ORIGIN}/api/v1`;
 };
 
-const getWsBase = (machineId: string = "MTR-704"): string => {
+export const getWsBase = (machineId: string = "MTR-704"): string => {
+  const envWs = (import.meta.env.VITE_WS_BASE_URL as string | undefined)?.trim();
+  if (envWs) {
+    const cleanWs = envWs.replace(/\/+$/, "");
+    return cleanWs.includes("/ws/telemetry") ? cleanWs : `${cleanWs}/ws/telemetry/${machineId}`;
+  }
+
   if (import.meta.env.DEV) {
     const proto = window.location.protocol === "https:" ? "wss:" : "ws:";
     return `${proto}//${window.location.host}/api/v1/ws/telemetry/${machineId}`;
   }
+
   return `wss://machinemind-ai-backend.onrender.com/api/v1/ws/telemetry/${machineId}`;
 };
 
@@ -44,17 +61,26 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
       },
     });
   } catch (err: any) {
-    // Fallback directly to 127.0.0.1:8000 if proxy or localhost DNS resolution failed
-    try {
-      response = await fetch(`http://127.0.0.1:8000/api/v1${endpoint}`, {
-        ...options,
-        headers: {
-          ...getAuthHeaders(),
-          ...(options.headers || {}),
-        },
-      });
-    } catch {
-      throw new Error("Unable to connect to MachineMind AI backend. Please verify FastAPI is running on port 8000.");
+    // Only in local development fallback to 127.0.0.1:8000 if proxy or localhost DNS resolution failed
+    if (import.meta.env.DEV) {
+      try {
+        response = await fetch(`http://127.0.0.1:8000/api/v1${endpoint}`, {
+          ...options,
+          headers: {
+            ...getAuthHeaders(),
+            ...(options.headers || {}),
+          },
+        });
+      } catch {
+        throw new Error("Unable to connect to local MachineMind AI backend. Please verify FastAPI is running on port 8000.");
+      }
+    } else {
+      // In production, NEVER attempt to connect to localhost/127.0.0.1
+      const isNetworkErr = err instanceof TypeError || (err.message && err.message.toLowerCase().includes("failed to fetch"));
+      if (isNetworkErr) {
+        throw new Error(`Unable to connect to production backend (${primaryUrl}). Please verify internet connection and backend status.`);
+      }
+      throw new Error(`Connection error to ${primaryUrl}: ${err.message || "Network request failed"}`);
     }
   }
 

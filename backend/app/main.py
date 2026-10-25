@@ -53,21 +53,27 @@ app = FastAPI(
 
 # CORS Middleware
 origins = list(settings.cors_origins_list)
-for o in [
+default_origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
-]:
+    "https://machinemind-ai.vercel.app",
+    "https://machine-mind-ai.vercel.app",
+]
+for o in default_origins:
     if o not in origins:
         origins.append(o)
 
+# If wildcard was passed, filter it out from explicit list since allow_credentials is True
+clean_origins = [o for o in origins if o != "*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$",
+    allow_origins=clean_origins,
+    allow_origin_regex=r"^https?://([a-zA-Z0-9_\-]+\.)?(vercel\.app|localhost|127\.0\.0\.1|onrender\.com)(:[0-9]+)?$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
